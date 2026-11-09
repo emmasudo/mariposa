@@ -165,7 +165,8 @@ def find_verus_procedure_name(file):
             or line.startswith('(set-info :comment ";; Function-Recommends')
             or line.startswith('(set-info :comment ";; Function-Expand-Errors')
         ):
-            return line[23:-3] + "\n" + prev[23:].split(" ")[0][:-3]
+            span_match = re.match(r"(.+):(\d+):\d+:", prev[23:])
+            return line[23:-3] + "\n" + f"{span_match.group(1)}:{span_match.group(2)}"
         prev = line
     return "no procedure found"
 
